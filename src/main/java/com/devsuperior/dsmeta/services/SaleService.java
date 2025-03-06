@@ -1,10 +1,13 @@
 package com.devsuperior.dsmeta.services;
 
 import com.devsuperior.dsmeta.dto.SaleMinDTO;
+import com.devsuperior.dsmeta.dto.SaleReportDTO;
 import com.devsuperior.dsmeta.dto.SaleSummaryDTO;
 import com.devsuperior.dsmeta.entities.Sale;
 import com.devsuperior.dsmeta.repositories.SaleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -28,7 +31,13 @@ public class SaleService {
 		LocalDate finalDate = maxDate.isEmpty() ? LocalDate.now(ZoneId.systemDefault()) : LocalDate.parse(maxDate);
 		LocalDate startDate = minDate.isEmpty() ? finalDate.minusYears(1L) : LocalDate.parse(minDate);
 		return repository.searchSummary(startDate, finalDate);
+	}
 
+	public Page<SaleReportDTO> searchReport (String minDate, String maxDate, String name, Pageable pageable){
+		LocalDate finalDate = maxDate.isEmpty() ? LocalDate.now(ZoneId.systemDefault()) : LocalDate.parse(maxDate);
+		LocalDate startDate = minDate.isEmpty() ? finalDate.minusYears(1L) : LocalDate.parse(minDate);
+
+		return repository.searchReport(startDate, finalDate, name, pageable);
 	}
 
 }
